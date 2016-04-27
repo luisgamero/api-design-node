@@ -48,8 +48,13 @@ app.post('/lions', function(req, res) {
 app.put('/lions/:id', function(req, res) {
   console.log('updating lion...');
   var lion = _.find(lions, {'id': +req.params.id});
+  var update = req.body;
   if (lion === undefined) {
     return res.status(404).send('<h1>ERROR: lion not found!</h1>');
+  }
+  //not allowed to update lion id (ids must be unique)
+  if (update.id) {
+    delete update.id;
   }
   _.assign(lion, req.body);
   res.json(lion);
