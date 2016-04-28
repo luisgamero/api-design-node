@@ -31,8 +31,14 @@ app.use(bodyParser.json());
 app.param('id', function(req, res, next, id) {
   // fill this out to find the lion based off the id
   // and attach it to req.lion. Rember to call next()
-  req.lion = _.find(lions, {id: id})[0];
-  next();
+  var lion = _.find(lions, {'id': id});
+
+  if (lion) {
+    req.lion = lion;
+    next();
+  } else {
+    res.status(500).send('lion not found');
+  }
 });
 
 app.get('/lions', function(req, res){
@@ -67,6 +73,8 @@ app.put('/lions/:id', function(req, res) {
   }
 });
 
+//NOTE: errors should be "funneled" to this error middleware by taking err object and passing it into the next function, as in: next(err). This directs the error to skip all subsequent middleware/routes and jump to the error handling middleware placed at the end (in this case, just a single error handling middleware)
+//basically, control moves to an error handling middleware ONLY if error is passed in next(err). Moving between subsequent error handling middleware MUST include next(err) (or it just ends)
 app.use(function(err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('something broke!');
