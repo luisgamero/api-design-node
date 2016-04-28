@@ -28,7 +28,6 @@ app.use(express.static('client'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-
 app.param('id', function(req, res, next, id) {
   // fill this out to find the lion based off the id
   // and attach it to req.lion. Rember to call next()
@@ -52,7 +51,6 @@ app.post('/lions', updateId, function(req, res) {
 
   res.json(lion);
 });
-
 
 app.put('/lions/:id', function(req, res) {
   var update = req.body;
