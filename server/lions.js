@@ -1,21 +1,21 @@
 var lionRouter = require('express').Router();
+var _ = require('lodash');
 
 var lions = [];
 var id = 0;
 
 var updateId = function(req, res, next) {
   if (!req.body.id) {
-    id++;
-    req.body.id = id + '';
+    req.body.id = '' + id++;
   }
   next();
 };
 
-lionRouter.param('id', function(req, res, next, id) {
-  var todo = _.find(todos, {id: id});
+lionRouter.param('id', function(req, res, next, lionId) {
+  var lion = _.find(lions, {id: lionId});
 
-  if (todo) {
-    req.todo = todo;
+  if (lion) {
+    req.lion = lion;
     next();
   } else {
     res.send();
@@ -27,7 +27,7 @@ lionRouter.get('/', function(req, res){
 });
 
 lionRouter.get('/:id', function(req, res){
-  var lion = req.todo;
+  var lion = req.lion;
   res.json(lion || {});
 });
 
@@ -42,8 +42,9 @@ lionRouter.post('/', updateId, function(req, res) {
 
 lionRouter.put('/:id', function(req, res) {
   var update = req.body;
+
   if (update.id) {
-    delete update.id
+    delete update.id;
   }
 
   var lion = _.findIndex(lions, {id: req.params.id});
