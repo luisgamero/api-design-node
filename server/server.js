@@ -21,6 +21,7 @@ app.use('/tigers', tigerRouter);
 
 app.use(function(err, req, res, next) {
   if (err) {
+    console.log(err.message);
     res.status(500).send(err);
   }
 });
