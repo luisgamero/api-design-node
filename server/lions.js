@@ -13,7 +13,7 @@ var updateId = function(req, res, next) {
 };
 
 lionRouter.param('id', function(req, res, next, id) {
-  var lion = _.find(lions, {id: id})
+  var lion = _.find(lions, {id: id});
 
   if (lion) {
     req.lion = lion;
@@ -50,7 +50,7 @@ lionRouter.delete('/:id', function(req, res) {
 lionRouter.put('/:id', function(req, res) {
   var update = req.body;
   if (update.id) {
-    delete update.id
+    delete update.id;
   }
 
   var lion = _.findIndex(lions, {id: req.params.id});
